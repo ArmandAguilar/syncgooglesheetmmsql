@@ -32,7 +32,7 @@ def get_credentials():
     """
     home_dir = os.path.expanduser('~')
     #credential_dir = os.path.join(home_dir, 'Documents/httdocs/syncgooglesheetmmsql/')
-    credential_dir = 'C:\ShellScript2016\syncgooglesheetmmsql\scripts\'
+    credential_dir = "C:\ShellScript2016\syncgooglesheetmmsql\scripts\\"
     print(credential_dir)
     if not os.path.exists(credential_dir):
         print('Error: dir dont exists')
