@@ -31,8 +31,7 @@ def get_credentials():
         Credentials, the obtained credential.
     """
     home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
-    print (home_dir)
+    credential_dir = os.path.join(home_dir, 'Documents/httdocs/syncgooglesheetmmsql/')
     print(credential_dir)
     #if not os.path.exists(credential_dir):
     #    os.makedirs(credential_dir)
