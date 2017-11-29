@@ -31,28 +31,30 @@ def get_credentials():
         Credentials, the obtained credential.
     """
     home_dir = os.path.expanduser('~')
-    #credential_dir = os.path.join(home_dir, 'Documents/httdocs/syncgooglesheetmmsql/')
-    credential_dir = "C:\ShellScript2016\syncgooglesheetmmsql\scripts\\"
-    #print(credential_dir)
-    #if not os.path.exists(credential_dir):
-    #    print('Error: dir dont exists')
-    #else :
-    #    credential_path = os.path.join(credential_dir,CLIENT_SECRET_FILE)
-    #    print(credential_path)
-    credential_path = os.path.join(credential_dir,CLIENT_SECRET_FILE)
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,'sheets.googleapis.com-python-quickstart.json')
+
     store = Storage(credential_path)
     credentials = store.get()
-    #if not credentials or credentials.invalid:
-    #    flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-    #    flow.user_agent = APPLICATION_NAME
-    #    if flags:
-    #        credentials = tools.run_flow(flow, store, flags)
-    #    else: # Needed only for compatibility with Python 2.6
-    #        credentials = tools.run(flow, store)
-    print('Storing credentials to ' + credential_path)
-    #return credentials
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+        flow.user_agent = APPLICATION_NAME
+        if flags:
+            credentials = tools.run_flow(flow, store, flags)
+        else: # Needed only for compatibility with Python 2.6
+            credentials = tools.run(flow, store)
+        print('Storing credentials to ' + credential_path)
+    return credentials
+#this function get the last id in the table user of Northind
+def lastId():
+    ID = 0
 
-def main():
+
+    return ID
+
+def create_user():
     """Shows basic usage of the Sheets API.
 
     Creates a Sheets API service object and prints the names and majors of
@@ -60,24 +62,31 @@ def main():
     https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
     """
     credentials = get_credentials()
-    #http = credentials.authorize(httplib2.Http())
-    #discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
-    #service = discovery.build('sheets', 'v4', http=http,discoveryServiceUrl=discoveryUrl)
+    http = credentials.authorize(httplib2.Http())
+    discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
+    service = discovery.build('sheets', 'v4', http=http,discoveryServiceUrl=discoveryUrl)
 
     #spreadsheetId = '17cWeLtwVbadMM0MZlwXoovif3hJQV4skXMwNlXQwUvo'
-    spreadsheetId = '1WBqvSg_D4ugNMgK9s-ykgKw3XAYtiNPTyauskC4784w'
-    rangeName = 'Hoja1!A1:F'
-    #result = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=rangeName).execute()
-    #values = result.get('values', [])
+    spreadsheetId = '1pCQwLJUgBVa6Q-s35QpWn0lmO-s3k7sx2wFwZxQYPLs'
+    rangeName = 'Honorarios2017!A7:W'
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=rangeName).execute()
+    values = result.get('values', [])
 
-    #if not values:
-    #    print('No data found.')
-    #else:
-    #    print('Name, Major:')
-    #    for row in values:
+    if not values:
+        print('No data found.')
+    else:
+        print('Name, Major:')
+        for row in values:
             #print columns A and E, which correspond to indices 0 and 4.
-    #        print('%s,%s,%s,%s,%s,%s' % (row[0],row[1],row[2],row[3],row[4],row[5]))
+            #Search the values empyts
+            if str(row[2])  == '0':
+                #print ('%s   %s  %s' % (row[0],row[1],row[2]))
+                Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (<Id, int,>,\'0\',\'' + str(row[0]) + '\',\'' + str(row[1]) + '\',\'Usuario\',\'' + str(row[6]) + '\',\'FortaMX001**\',<Departamento, varchar(50),>,<Perfil, varchar(50),>,<Titulo, varchar(20),>,<IdNumbre, numeric(18,0),> ,<Acronimo, varchar(50),>,<Avatar, varchar,>,<CobranzaPerfil, varchar,> ,<TeamWok, varchar(4),>,<IdTemWork, int,>,<FechaIngreso, smalldatetime,>)'
+                print (Sql)
+#################################################################################
+##                                                                             ##
+##                              Test Function                                  ##
+##                                                                             ##
+#################################################################################
 
-
-if __name__ == '__main__':
-    main()
+create_user()
