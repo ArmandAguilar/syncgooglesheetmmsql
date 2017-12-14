@@ -1,3 +1,9 @@
+#!user/bin/python
+# -*- coding: Windows-1252 -*-
+# -*- coding: cp1252 -*-
+# -*- coding: utf-8 -*-
+# -*- coding: IBM850 -*-
+#import for google apis
 from __future__ import print_function
 import httplib2
 import os
@@ -6,6 +12,17 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+
+#imports for jso and request
+import json
+import requests
+from urllib2 import urlopen,base64
+#here section for tokes
+from tokensDB import *
+from tokensTW import *
+#here import connection to DB
+import pypyodbc as pyodbc
+import pymssql
 
 try:
     import argparse
@@ -18,7 +35,8 @@ except ImportError:
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 #CLIENT_SECRET_FILE = 'tokenPersonal.json'
 #APPLICATION_NAME = 'Sheets'
-CLIENT_SECRET_FILE = 'tokenf.json'
+#CLIENT_SECRET_FILE = 'tokenf.json'
+CLIENT_SECRET_FILE = 'C:\\Users\\Administrador\\Desktop\\syncgooglesheetmmsql\scripts\\tokenf.json'
 APPLICATION_NAME = 'GoogleSheetsMatriz'
 
 def get_credentials():
@@ -50,10 +68,46 @@ def get_credentials():
 #this function get the last id in the table user of Northind
 def lastId():
     ID = 0
+    sql = 'SELECT [Id] FROM [Northwind].[dbo].[Usuarios] order by Id asc'
+    con = pyodbc.connect(constrNorthwind)
+    cur = con.cursor()
+    cur.execute(sql)
+    for value in cur:
+        ID = value[0]
+    con.commit()
+    con.close()
+    return ID + 1
+#this function create a new user en teamwork and get your ID
+def createUserTemwork(firstName,lastName,email,userName,password):
+    ID = 8000
+    data = {
+	'person': {
+		'first-name': 'Batusai',
+		'last-name': 'El Destajador',
+		'email-address': 'batusai@fortaingenieria.com',
+		'user-type': 'account',
+		'user-name': 'demo2',
+		'password': 'd3m02',
+		'company-id': '98191',
+	}
+}
+    dataJson = json.dumps(data)
+    #r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
+    #r.status_code
+    return dataJson
 
+def instertRecurso(id,nombre,costo):
+    sql = 'INSERT INTO [SAP].[dbo].[RecursosCostos] VALUES (\'' + str(nombre) + '\',\'' + str(id) + '\',\'' + str(costo) + '\')'
 
-    return ID
-
+    return sql
+def execute_SQL(sql,DB):
+        valor = 'Procesando..'
+        conn = pymssql.connect(host=hostMSSQL,user=userMSSQL,password=passMSSQL,database=DB)
+        cur = conn.cursor()
+        cur.execute(sql)
+        conn.commit()
+        conn.close()
+        return sql
 def create_user():
     """Shows basic usage of the Sheets API.
 
@@ -66,7 +120,7 @@ def create_user():
     discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
     service = discovery.build('sheets', 'v4', http=http,discoveryServiceUrl=discoveryUrl)
 
-    #spreadsheetId = '17cWeLtwVbadMM0MZlwXoovif3hJQV4skXMwNlXQwUvo'
+    spreadsheetId = '17cWeLtwVbadMM0MZlwXoovif3hJQV4skXMwNlXQwUvo'
     spreadsheetId = '1pCQwLJUgBVa6Q-s35QpWn0lmO-s3k7sx2wFwZxQYPLs'
     rangeName = 'Honorarios2017!A7:W'
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=rangeName).execute()
@@ -75,18 +129,31 @@ def create_user():
     if not values:
         print('No data found.')
     else:
-        print('Name, Major:')
         for row in values:
             #print columns A and E, which correspond to indices 0 and 4.
             #Search the values empyts
             if str(row[2])  == '0':
                 #print ('%s   %s  %s' % (row[0],row[1],row[2]))
-                Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (<Id, int,>,\'0\',\'' + str(row[0]) + '\',\'' + str(row[1]) + '\',\'Usuario\',\'' + str(row[6]) + '\',\'FortaMX001**\',<Departamento, varchar(50),>,<Perfil, varchar(50),>,<Titulo, varchar(20),>,<IdNumbre, numeric(18,0),> ,<Acronimo, varchar(50),>,<Avatar, varchar,>,<CobranzaPerfil, varchar,> ,<TeamWok, varchar(4),>,<IdTemWork, int,>,<FechaIngreso, smalldatetime,>)'
-                print (Sql)
+                IdUser = lastId()
+                costo = str(row[20]).replace(',','.')
+                pwd = 'fortaMX' + str(IdUser) + '**'
+                IdUserTeamWork =  createUserTemwork(str(row[0].strip()),str(row[1].strip()),str(row[6]),str(row[0]),str(pwd))
+                nombre = str(row[0].encode("iso-8859-1"))
+                apellidos = str(row[1].encode("iso-8859-1"))
+                depto = str(row[4].encode("iso-8859-1"))
+                perfil = str(row[5].encode("iso-8859-1"))
+
+                Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
+                SqlRecursos = instertRecurso(IdUser,row[0],costo)
+                print(Sql)
+                execute_SQL(Sql,dbMSSQLNorthwind)
+                print(SqlRecursos)
+                execute_SQL(SqlRecursos,dbMSSQLSAP)
+
 #################################################################################
 ##                                                                             ##
 ##                              Test Function                                  ##
 ##                                                                             ##
 #################################################################################
 
-create_user()
+#create_user()
