@@ -79,22 +79,32 @@ def lastId():
     return ID + 1
 #this function create a new user en teamwork and get your ID
 def createUserTemwork(firstName,lastName,email,userName,password):
+    Id = 0
+    company = "https://forta"
+    key = "dublin527patrick"
+    url = "https://forta.teamwork.com"
     ID = 8000
-    data = {
-	'person': {
-		'first-name': 'Batusai',
-		'last-name': 'El Destajador',
-		'email-address': 'batusai@fortaingenieria.com',
-		'user-type': 'account',
-		'user-name': 'demo2',
-		'password': 'd3m02',
-		'company-id': '98191',
-	}
-}
+    data = {'person':{}}
+    data['person']['first-name'] = firstName
+    data['person']['last-name'] = lastName
+    data['person']['email-address'] = email
+    data['person']['user-type'] = 'account'
+    data['person']['user-name'] = firstName
+    data['person']['password'] = password
+    data['person']['company-id'] = '98191'
+
+
     dataJson = json.dumps(data)
-    #r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
-    #r.status_code
-    return dataJson
+    print (str(dataJson))
+    r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
+    data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
+    #Print Staus Code to know that happed , in production c¡be comment
+    #print(r.status_code)
+    #print(r.text)
+    #print(r.json)
+    #{u'STATUS': u'OK', u'id': u'317825'}
+    Id = r.json()['id']
+    return Id
 
 def instertRecurso(id,nombre,costo):
     sql = 'INSERT INTO [SAP].[dbo].[RecursosCostos] VALUES (\'' + str(nombre) + '\',\'' + str(id) + '\',\'' + str(costo) + '\')'
@@ -146,9 +156,9 @@ def create_user():
                 Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
                 SqlRecursos = instertRecurso(IdUser,row[0],costo)
                 print(Sql)
-                execute_SQL(Sql,dbMSSQLNorthwind)
+                #execute_SQL(Sql,dbMSSQLNorthwind)
                 print(SqlRecursos)
-                execute_SQL(SqlRecursos,dbMSSQLSAP)
+                #execute_SQL(SqlRecursos,dbMSSQLSAP)
 
 #################################################################################
 ##                                                                             ##
@@ -156,4 +166,4 @@ def create_user():
 ##                                                                             ##
 #################################################################################
 
-#create_user()
+create_user()

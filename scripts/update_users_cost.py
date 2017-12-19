@@ -5,8 +5,6 @@
 # -*- coding: IBM850 -*-
 from credential import *
 
-
-
 def update_cost():
     #here code !
     msj = 'Yupi!!!'
