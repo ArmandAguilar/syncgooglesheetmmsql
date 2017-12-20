@@ -23,48 +23,10 @@ from tokensTW import *
 #here import connection to DB
 import pypyodbc as pyodbc
 import pymssql
+#Here import the function by make login in google apis
+from credential import *
 
-try:
-    import argparse
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
 
-# If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/sheets.googleapis.com-python-quickstart.json
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
-#CLIENT_SECRET_FILE = 'tokenPersonal.json'
-#APPLICATION_NAME = 'Sheets'
-#CLIENT_SECRET_FILE = 'tokenf.json'
-CLIENT_SECRET_FILE = 'C:\\Users\\Administrador\\Desktop\\syncgooglesheetmmsql\scripts\\tokenf.json'
-APPLICATION_NAME = 'GoogleSheetsMatriz'
-
-def get_credentials():
-    """Gets valid user credentials from storage.
-
-    If nothing has been stored, or if the stored credentials are invalid,
-    the OAuth2 flow is completed to obtain the new credentials.
-
-    Returns:
-        Credentials, the obtained credential.
-    """
-    home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
-    if not os.path.exists(credential_dir):
-        os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,'sheets.googleapis.com-python-quickstart.json')
-
-    store = Storage(credential_path)
-    credentials = store.get()
-    if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-        flow.user_agent = APPLICATION_NAME
-        if flags:
-            credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
-            credentials = tools.run(flow, store)
-        print('Storing credentials to ' + credential_path)
-    return credentials
 #this function get the last id in the table user of Northind
 def lastId():
     ID = 0
@@ -143,22 +105,41 @@ def create_user():
             #print columns A and E, which correspond to indices 0 and 4.
             #Search the values empyts
             if str(row[2])  == '0':
-                #print ('%s   %s  %s' % (row[0],row[1],row[2]))
-                IdUser = lastId()
-                costo = str(row[20]).replace(',','.')
-                pwd = 'fortaMX' + str(IdUser) + '**'
-                IdUserTeamWork =  createUserTemwork(str(row[0].strip()),str(row[1].strip()),str(row[6]),str(row[0]),str(pwd))
-                nombre = str(row[0].encode("iso-8859-1"))
-                apellidos = str(row[1].encode("iso-8859-1"))
-                depto = str(row[4].encode("iso-8859-1"))
-                perfil = str(row[5].encode("iso-8859-1"))
-
-                Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
-                SqlRecursos = instertRecurso(IdUser,row[0],costo)
-                print(Sql)
-                #execute_SQL(Sql,dbMSSQLNorthwind)
-                print(SqlRecursos)
-                #execute_SQL(SqlRecursos,dbMSSQLSAP)
+                #Here apply the filtre by errors in the sheets)
+                #Here we filter the INICIALES
+                if str(row[3]) == '':
+                    #Send notification
+                #Here we filter Depto
+                elif str(row[4]) == '':
+                    #Send notification
+                #Here we filter Puesto
+                elif str(row[5]) == '':
+                    #Send notification
+                #Here filter email
+                elif str(row[6]) == '':
+                    #send notification
+                #Here filter Costo
+                elif str(row[20]) == '':
+                    #send notification
+                #Here fecha
+                elif str(row[22]) == '':
+                    #send notification
+                else:
+                    #Registre the new user
+                    IdUser = lastId()
+                    costo = str(row[20]).replace(',','.')
+                    pwd = 'fortaMX' + str(IdUser) + '**'
+                    IdUserTeamWork =  createUserTemwork(str(row[0].strip()),str(row[1].strip()),str(row[6]),str(row[0]),str(pwd))
+                    nombre = str(row[0].encode("iso-8859-1"))
+                    apellidos = str(row[1].encode("iso-8859-1"))
+                    depto = str(row[4].encode("iso-8859-1"))
+                    perfil = str(row[5].encode("iso-8859-1"))
+                    Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
+                    SqlRecursos = instertRecurso(IdUser,row[0],costo)
+                    print(Sql)
+                    #execute_SQL(Sql,dbMSSQLNorthwind)
+                    print(SqlRecursos)
+                    #execute_SQL(SqlRecursos,dbMSSQLSAP)
 
 #################################################################################
 ##                                                                             ##
