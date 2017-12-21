@@ -109,21 +109,28 @@ def create_user():
                 #Here we filter the INICIALES
                 if str(row[3]) == '':
                     #Send notification
+                    v = 0
+                    print ('Inciiales')
                 #Here we filter Depto
                 elif str(row[4]) == '':
                     #Send notification
+                    v = 0
                 #Here we filter Puesto
                 elif str(row[5]) == '':
                     #Send notification
+                    v = 0
                 #Here filter email
                 elif str(row[6]) == '':
                     #send notification
+                    v = 0
                 #Here filter Costo
                 elif str(row[20]) == '':
                     #send notification
+                    v = 0
                 #Here fecha
                 elif str(row[22]) == '':
                     #send notification
+                    v = 0
                 else:
                     #Registre the new user
                     IdUser = lastId()

@@ -1,2 +1,8 @@
 scripts/token.json
-scripts/sheets.py
+scripts/tokenf.json
+scripts/tokeng.json
+scripts/tokensDB.py
+scripts/tokensTW.py
+*.pyc
+*.DS_Store
+evm/
