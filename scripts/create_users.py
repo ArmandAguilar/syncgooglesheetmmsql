@@ -45,7 +45,6 @@ def createUserTemwork(firstName,lastName,email,userName,password):
     company = "https://forta"
     key = "dublin527patrick"
     url = "https://forta.teamwork.com"
-    ID = 8000
     data = {'person':{}}
     data['person']['first-name'] = firstName
     data['person']['last-name'] = lastName
@@ -58,15 +57,15 @@ def createUserTemwork(firstName,lastName,email,userName,password):
 
     dataJson = json.dumps(data)
     print (str(dataJson))
-    r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
-    data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
+    #r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
+    #data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
     #Print Staus Code to know that happed , in production c¡be comment
     #print(r.status_code)
     #print(r.text)
     #print(r.json)
     #{u'STATUS': u'OK', u'id': u'317825'}
-    Id = r.json()['id']
-    return Id
+    #Id = r.json()['id']
+    #return Id
 
 def instertRecurso(id,nombre,costo):
     sql = 'INSERT INTO [SAP].[dbo].[RecursosCostos] VALUES (\'' + str(nombre) + '\',\'' + str(id) + '\',\'' + str(costo) + '\')'
@@ -107,46 +106,57 @@ def create_user():
             if str(row[2])  == '0':
                 #Here apply the filtre by errors in the sheets)
                 #Here we filter the INICIALES
+
                 if str(row[3]) == '':
                     #Send notification
                     v = 0
-                    print ('Inciiales')
+                    print ('Faltan Iniciales')
                 #Here we filter Depto
                 elif str(row[4]) == '':
                     #Send notification
                     v = 0
+                    print ('Faltan Departamento')
                 #Here we filter Puesto
                 elif str(row[5]) == '':
                     #Send notification
                     v = 0
+                    print ('Faltan Pueto')
                 #Here filter email
                 elif str(row[6]) == '':
                     #send notification
                     v = 0
+                    print ('Faltan Email')
                 #Here filter Costo
                 elif str(row[20]) == '':
                     #send notification
                     v = 0
+                    print ('Faltan Costo')
                 #Here fecha
                 elif str(row[22]) == '':
                     #send notification
                     v = 0
+                    print ('Faltan Fecha')
                 else:
                     #Registre the new user
-                    IdUser = lastId()
-                    costo = str(row[20]).replace(',','.')
-                    pwd = 'fortaMX' + str(IdUser) + '**'
-                    IdUserTeamWork =  createUserTemwork(str(row[0].strip()),str(row[1].strip()),str(row[6]),str(row[0]),str(pwd))
-                    nombre = str(row[0].encode("iso-8859-1"))
-                    apellidos = str(row[1].encode("iso-8859-1"))
-                    depto = str(row[4].encode("iso-8859-1"))
-                    perfil = str(row[5].encode("iso-8859-1"))
-                    Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
-                    SqlRecursos = instertRecurso(IdUser,row[0],costo)
-                    print(Sql)
-                    #execute_SQL(Sql,dbMSSQLNorthwind)
-                    print(SqlRecursos)
-                    #execute_SQL(SqlRecursos,dbMSSQLSAP)
+                    try:
+                        pass
+                        IdUser = lastId()
+                        costo = str(row[20]).replace(',','.')
+                        pwd = 'fortaMX' + str(IdUser) + '**'
+                        IdUserTeamWork =  createUserTemwork(str(row[0].strip()),str(row[1].strip()),str(row[6]),str(row[0]),str(pwd))
+                        nombre = str(row[0].encode("iso-8859-1"))
+                        apellidos = str(row[1].encode("iso-8859-1"))
+                        depto = str(row[4].encode("iso-8859-1"))
+                        perfil = str(row[5].encode("iso-8859-1"))
+                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
+                        SqlRecursos = instertRecurso(IdUser,row[0],costo)
+                        print(Sql)
+                        #execute_SQL(Sql,dbMSSQLNorthwind)
+                        print(SqlRecursos)
+                        #execute_SQL(SqlRecursos,dbMSSQLSAP)
+                    except Exception as e:
+                        raise
+
 
 #################################################################################
 ##                                                                             ##
