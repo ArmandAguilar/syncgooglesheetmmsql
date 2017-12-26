@@ -3,5 +3,6 @@ tokenf.json
 tokeng.json
 tokensDB.py
 tokensTW.py
+tokensNotification.py
 *.DS_Store
 *.pyc

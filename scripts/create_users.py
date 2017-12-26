@@ -20,11 +20,13 @@ from urllib2 import urlopen,base64
 #here section for tokes
 from tokensDB import *
 from tokensTW import *
+from tokensNotification import *
 #here import connection to DB
 import pypyodbc as pyodbc
 import pymssql
 #Here import the function by make login in google apis
 from credential import *
+from notification import *
 
 
 #this function get the last id in the table user of Northind
@@ -56,7 +58,7 @@ def createUserTemwork(firstName,lastName,email,userName,password):
 
 
     dataJson = json.dumps(data)
-    print (str(dataJson))
+    #print (str(dataJson))
     #r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
     #data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
     #Print Staus Code to know that happed , in production c¡be comment
@@ -65,7 +67,7 @@ def createUserTemwork(firstName,lastName,email,userName,password):
     #print(r.json)
     #{u'STATUS': u'OK', u'id': u'317825'}
     #Id = r.json()['id']
-    #return Id
+    return Id
 
 def instertRecurso(id,nombre,costo):
     sql = 'INSERT INTO [SAP].[dbo].[RecursosCostos] VALUES (\'' + str(nombre) + '\',\'' + str(id) + '\',\'' + str(costo) + '\')'
@@ -109,37 +111,37 @@ def create_user():
 
                 if str(row[3]) == '':
                     #Send notification
-                    v = 0
+                    send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Iniciales- se encuentra vacio')
                     print ('Faltan Iniciales')
                 #Here we filter Depto
                 elif str(row[4]) == '':
                     #Send notification
-                    v = 0
+                    send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Departamento- se encuentra vacio')
                     print ('Faltan Departamento')
                 #Here we filter Puesto
                 elif str(row[5]) == '':
                     #Send notification
-                    v = 0
-                    print ('Faltan Pueto')
+                    send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Puesto- se encuentra vacio')
+                    print ('Faltan Puesto')
                 #Here filter email
                 elif str(row[6]) == '':
                     #send notification
-                    v = 0
+                    send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Email- se encuentra vacio')
                     print ('Faltan Email')
                 #Here filter Costo
                 elif str(row[20]) == '':
                     #send notification
-                    v = 0
+                    send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Faltan Costo- se encuentra vacio')
                     print ('Faltan Costo')
                 #Here fecha
                 elif str(row[22]) == '':
                     #send notification
-                    v = 0
+                    send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Faltan Fecha- se encuentra vacio')
                     print ('Faltan Fecha')
                 else:
                     #Registre the new user
                     try:
-                        pass
+                        #pass
                         IdUser = lastId()
                         costo = str(row[20]).replace(',','.')
                         pwd = 'fortaMX' + str(IdUser) + '**'
@@ -151,11 +153,13 @@ def create_user():
                         Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
                         SqlRecursos = instertRecurso(IdUser,row[0],costo)
                         print(Sql)
-                        #execute_SQL(Sql,dbMSSQLNorthwind)
+                        execute_SQL(Sql,dbMSSQLNorthwind)
                         print(SqlRecursos)
-                        #execute_SQL(SqlRecursos,dbMSSQLSAP)
+                        execute_SQL(SqlRecursos,dbMSSQLSAP)
                     except Exception as e:
-                        raise
+                        #raise
+                        send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','Error: se pudo ejecutar la consulsa en el MMSQL')
+
 
 
 #################################################################################
