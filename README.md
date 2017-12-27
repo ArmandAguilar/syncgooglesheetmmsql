@@ -1,4 +1,4 @@
-# Teamwork To MMSQL
+# Sync - Google - Sheets To MMSQL
 
 > This script read the Matriz-Honorarios-2017 (Google Sheets) and proceses the new user, when the field Id is 0 the script know the user is new in the system ,read all row and register a new user in SAP (MMSQL) and Teamwork.
 
