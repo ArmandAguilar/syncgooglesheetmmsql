@@ -3,6 +3,7 @@ scripts/tokenf.json
 scripts/tokeng.json
 scripts/tokensDB.py
 scripts/tokensTW.py
+scripts/tokensNotification.py
 *.pyc
 *.DS_Store
 evm/
