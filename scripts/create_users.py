@@ -1,8 +1,6 @@
 #!user/bin/python
-# -*- coding: Windows-1252 -*-
-# -*- coding: cp1252 -*-
 # -*- coding: utf-8 -*-
-# -*- coding: IBM850 -*-
+
 #import for google apis
 from __future__ import print_function
 import httplib2
@@ -17,6 +15,7 @@ from oauth2client.file import Storage
 import json
 import requests
 from urllib2 import urlopen,base64
+import unicodedata
 #here section for tokes
 from tokensDB import *
 from tokensTW import *
@@ -27,7 +26,10 @@ import pymssql
 #Here import the function by make login in google apis
 from credential import *
 from notification import *
-
+import unicodedata
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 #this function get the last id in the table user of Northind
 def lastId():
@@ -58,15 +60,15 @@ def createUserTemwork(firstName,lastName,email,userName,password):
 
 
     dataJson = json.dumps(data)
-    #print (str(dataJson))
-    #r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
-    #data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
+    print (str(dataJson))
+    r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
+    data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
     #Print Staus Code to know that happed , in production c¡be comment
     #print(r.status_code)
     #print(r.text)
     #print(r.json)
     #{u'STATUS': u'OK', u'id': u'317825'}
-    #Id = r.json()['id']
+    Id = r.json()['id']
     return Id
 
 def instertRecurso(id,nombre,costo):
@@ -145,17 +147,18 @@ def create_user():
                         IdUser = lastId()
                         costo = str(row[20]).replace(',','.')
                         pwd = 'fortaMX' + str(IdUser) + '**'
-                        IdUserTeamWork =  createUserTemwork(str(row[0].strip()),str(row[1].strip()),str(row[6]),str(row[0]),str(pwd))
                         nombre = str(row[0].encode("iso-8859-1"))
                         apellidos = str(row[1].encode("iso-8859-1"))
                         depto = str(row[4].encode("iso-8859-1"))
                         perfil = str(row[5].encode("iso-8859-1"))
-                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str() + '\',\'' + str(row[22]) + '\')'
+                        IdUserTeamWork =  createUserTemwork(row[0].strip(),row[1].strip(),str(row[6]),str(row[0]),str(pwd))
+                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str(IdUserTeamWork) + '\',\'' + str(row[22]) + '\')'
                         SqlRecursos = instertRecurso(IdUser,row[0],costo)
                         print(Sql)
                         execute_SQL(Sql,dbMSSQLNorthwind)
                         print(SqlRecursos)
                         execute_SQL(SqlRecursos,dbMSSQLSAP)
+                        send_notification('Nuevo usuario creado: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El Id de  ' + str(nombre) + ' '+ str(apellidos) + 'es : ' + str(IdUser) + 'Favor de registar eso en la MatrizHonorarios')
                     except Exception as e:
                         #raise
                         send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','Error: se pudo ejecutar la consulsa en el MMSQL')
