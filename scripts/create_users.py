@@ -61,14 +61,27 @@ def createUserTemwork(firstName,lastName,email,userName,password):
 
     dataJson = json.dumps(data)
     print (str(dataJson))
-    r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
+    #Here make the validate for create
+    r = requests.get('https://forta.teamwork.com/people.json?emailaddress=' + str(email) , auth = (key, ''))
+    print (r.status_code)
     data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
-    #Print Staus Code to know that happed , in production c¡be comment
-    #print(r.status_code)
-    #print(r.text)
-    #print(r.json)
-    #{u'STATUS': u'OK', u'id': u'317825'}
-    Id = r.json()['id']
+    print(len(data['people']))
+    if len(data['people']) > 0:
+        #print ('Ya existe')
+        #print ( 'Id : ' + data['people'][0]['id'])
+        #print ( 'Email: ' + data['people'][0]['email-address'])
+        Id = data['people'][0]['id']
+    else:
+        print ('No existe')
+        r = requests.post(url + '/people.json' ,auth = (key, ''), data=dataJson)
+        data = json.loads(r.text,encoding='utf-8',cls=None,object_hook=None, parse_float=None,parse_int=None, parse_constant=None,object_pairs_hook=None)
+        #Print Staus Code to know that happed , in production c¡be comment
+        #print(r.status_code)
+        #print(r.text)
+        #print(r.json)
+        #{u'STATUS': u'OK', u'id': u'317825'}
+        Id = r.json()['id']
+
     return Id
 
 def instertRecurso(id,nombre,costo):
