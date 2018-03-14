@@ -46,9 +46,6 @@ def lastId():
 #this function create a new user en teamwork and get your ID
 def createUserTemwork(firstName,lastName,email,userName,password):
     Id = 0
-    company = "https://forta"
-    key = "dublin527patrick"
-    url = "https://forta.teamwork.com"
     data = {'person':{}}
     data['person']['first-name'] = firstName
     data['person']['last-name'] = lastName
@@ -110,7 +107,7 @@ def create_user():
 
     spreadsheetId = '17cWeLtwVbadMM0MZlwXoovif3hJQV4skXMwNlXQwUvo'
     spreadsheetId = '1pCQwLJUgBVa6Q-s35QpWn0lmO-s3k7sx2wFwZxQYPLs'
-    rangeName = 'Honorarios2017!A7:W'
+    rangeName = 'Honorarios2018!A7:X'
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=rangeName).execute()
     values = result.get('values', [])
 
@@ -123,7 +120,11 @@ def create_user():
             if str(row[2])  == '0':
                 #Here apply the filtre by errors in the sheets)
                 #Here we filter the INICIALES
-
+                FechaIngreso = '1999-01-01'
+                try:
+                    FechaIngreso = str(row[22])
+                except:
+                    FechaIngresos = '1999-01-01'
                 if str(row[3]) == '':
                     #Send notification
                     send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','El campo -Iniciales- se encuentra vacio')
@@ -165,7 +166,7 @@ def create_user():
                         depto = str(row[4].encode("iso-8859-1"))
                         perfil = str(row[5].encode("iso-8859-1"))
                         IdUserTeamWork =  createUserTemwork(row[0].strip(),row[1].strip(),str(row[6]),str(row[0]),str(pwd))
-                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str(IdUserTeamWork) + '\',\'' + str(row[22]) + '\')'
+                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str(IdUserTeamWork) + '\',\'' + str(row[22]) + '\',\''+ str(FechaIngreso) +'\',\'1999-01-01\')'
                         SqlRecursos = instertRecurso(IdUser,row[0],costo)
                         print(Sql)
                         execute_SQL(Sql,dbMSSQLNorthwind)
