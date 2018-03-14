@@ -7,3 +7,5 @@ scripts/tokensNotification.py
 *.pyc
 *.DS_Store
 evm/
+.idea/workspace.xml
+

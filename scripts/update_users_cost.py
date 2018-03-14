@@ -80,16 +80,15 @@ def update_cost():
                             if str(perfil) != '':
                                 if email !='':
                                     try:
-                                        #sqlCostos = 'UPDATE [SAP].[dbo].[RecursosCostos] SET [CostoUnitario] = \'' + str(costo) + '\' WHERE IdRecurso=\'' +  str(row[2]) + '\''
+                                        sqlCostos = 'UPDATE [SAP].[dbo].[RecursosCostos] SET [CostoUnitario] = \'' + str(costo) + '\' WHERE IdRecurso=\'' +  str(row[2]) + '\''
                                         sqlUser = 'UPDATE [Northwind].[dbo].[Usuarios] SET  FechaIngreso=\'' + str(FechaIngreso) + '\', FechaSalida=\'' + str(FechaSalida) + '\',Email=\'' + str(email) +  '\',Perfil=\'' + str(perfil) + '\',Acronimo=\'' + str(row[3]) + '\' WHERE Id=\'' + str(row[2]) + '\''
-                                        #sqlUser = 'UPDATE [Northwind].[dbo].[Usuarios] SET Email=\'' + str(email) +  '\',Perfil=\'' + str(perfil) + '\',Acronimo=\'' + str(row[3]) + '\' WHERE Id=\'' + str(row[2]) + '\''
-                                        #execute_SQL(sqlCostos,'SAP')
+                                        execute_SQL(sqlCostos,'SAP')
                                         execute_SQL(sqlUser, 'Northwind')
-                                        #print (str(sqlCostos))
+                                        print (str(sqlCostos))
                                         print(str(sqlUser))
                                     except:
-                                            #send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','Error: se pudo ejecutar la consulsa en el MMSQL Verificar el usuario (ID): ' + str(row[2]))
-                                            print('---------->' + sqlUser)
+                                        send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','Error: se pudo ejecutar la consulsa en el MMSQL Verificar el usuario (ID): ' + str(row[2]))
+
 #################################################################################
 ##                                                                             ##
 ##                              Test Function                                  ##

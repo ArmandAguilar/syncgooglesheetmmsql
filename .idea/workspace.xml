@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83e24994-3c92-4b3a-b0e2-d715661d9ea7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/evm/pip-selfcheck.json" afterPath="$PROJECT_DIR$/evm/pip-selfcheck.json" />
-      <change beforePath="$PROJECT_DIR$/scripts/create_users.py" afterPath="$PROJECT_DIR$/scripts/create_users.py" />
-      <change beforePath="$PROJECT_DIR$/scripts/delete_user.py" afterPath="$PROJECT_DIR$/scripts/delete_user.py" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/scripts/update_users_cost.py" afterPath="$PROJECT_DIR$/scripts/update_users_cost.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create_users.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="create_users.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/create_users.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="248">
@@ -31,11 +29,21 @@
       <file leaf-file-name="update_users_cost.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/update_users_cost.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-497">
-              <caret line="43" column="12" lean-forward="true" selection-start-line="43" selection-start-column="12" selection-end-line="47" selection-end-column="44" />
+            <state relative-caret-position="174">
+              <caret line="82" column="40" lean-forward="false" selection-start-line="82" selection-start-column="40" selection-end-line="82" selection-end-column="40" />
               <folding>
                 <element signature="e#147#169#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -48,8 +56,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/scripts/update_users_cost.py" />
         <option value="$PROJECT_DIR$/scripts/create_users.py" />
+        <option value="$PROJECT_DIR$/scripts/update_users_cost.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -100,11 +109,6 @@
             <path>
               <item name="syncgooglesheetmmsql" type="b2602c69:ProjectViewProjectNode" />
               <item name="syncgooglesheetmmsql" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="syncgooglesheetmmsql" type="b2602c69:ProjectViewProjectNode" />
-              <item name="syncgooglesheetmmsql" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -233,16 +237,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/update_users_cost.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-497">
-          <caret line="43" column="12" lean-forward="true" selection-start-line="43" selection-start-column="12" selection-end-line="47" selection-end-column="44" />
-          <folding>
-            <element signature="e#147#169#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/create_users.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -250,6 +244,24 @@
           <folding>
             <element signature="e#67#104#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/update_users_cost.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="82" column="40" lean-forward="false" selection-start-line="82" selection-start-column="40" selection-end-line="82" selection-end-column="40" />
+          <folding>
+            <element signature="e#147#169#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
