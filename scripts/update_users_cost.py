@@ -74,18 +74,20 @@ def update_cost():
             #Search the values empyts
             if str(costo)  > '0':
                 #print ('%s   %s  %s' % (row[0],row[1],row[2]))
-                if str(costo) > '0':
+                if float(costo) > 0.0:
                     if str(iniciales) != '':
                         if str(depto) != '':
                             if str(perfil) != '':
                                 if email !='':
                                     try:
-                                        sqlCostos = 'UPDATE [SAP].[dbo].[RecursosCostos] SET [CostoUnitario] = \'' + str(costo) + '\' WHERE IdRecurso=\'' +  str(row[2]) + '\''
-                                        sqlUser = 'UPDATE [Northwind].[dbo].[Usuarios] SET  FechaIngreso=\'' + str(FechaIngreso) + '\', FechaSalida=\'' + str(FechaSalida) + '\',Email=\'' + str(email) +  '\',Perfil=\'' + str(perfil) + '\',Acronimo=\'' + str(row[3]) + '\' WHERE Id=\'' + str(row[2]) + '\''
-                                        execute_SQL(sqlCostos,'SAP')
-                                        execute_SQL(sqlUser, 'Northwind')
-                                        print (str(sqlCostos))
-                                        print(str(sqlUser))
+                                        if int(row[2]) > 0:
+                                            sqlCostos = 'UPDATE [SAP].[dbo].[RecursosCostos] SET [CostoUnitario] = \'' + str(costo) + '\' WHERE IdRecurso=\'' +  str(row[2]) + '\''
+                                            sqlUser = 'UPDATE [Northwind].[dbo].[Usuarios] SET  FechaIngreso=\'' + str(FechaIngreso) + '\', FechaSalida=\'' + str(FechaSalida) + '\',Email=\'' + str(email) +  '\',Perfil=\'' + str(perfil) + '\',Acronimo=\'' + str(row[3]) + '\' WHERE Id=\'' + str(row[2]) + '\''
+                                            #sqlUser = 'UPDATE [Northwind].[dbo].[Usuarios] SET  FechaIngreso=\'' + str(FechaIngreso) + '\', FechaSalida=\'' + str(FechaSalida) + '\',Email=\'' + str(email) + '\',Perfil=\'' + str(perfil) + '\',Acronimo=\'' + str(row[3]) + '\' WHERE Id=\'' + str(row[2]) + '\''
+                                            execute_SQL(sqlCostos,'SAP')
+                                            execute_SQL(sqlUser, 'Northwind')
+                                            print (str(sqlCostos))
+                                            print(str(sqlUser))
                                     except:
                                         send_notification('Error: MatrizHonorarios 2017','a.aguilar@fortaingenieria.com','Error: se pudo ejecutar la consulsa en el MMSQL Verificar el usuario (ID): ' + str(row[2]))
 

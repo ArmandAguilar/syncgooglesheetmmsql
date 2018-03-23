@@ -166,7 +166,7 @@ def create_user():
                         depto = str(row[4].encode("iso-8859-1"))
                         perfil = str(row[5].encode("iso-8859-1"))
                         IdUserTeamWork =  createUserTemwork(row[0].strip(),row[1].strip(),str(row[6]),str(row[0]),str(pwd))
-                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str(IdUserTeamWork) + '\',\'' + str(row[22]) + '\',\''+ str(FechaIngreso) +'\',\'1999-01-01\')'
+                        Sql = 'INSERT INTO [Northwind].[dbo].[Usuarios] VALUES (\'' + str(IdUser) + '\',\'0\',\'' + str(nombre.strip()) + '\',\'' + str(apellidos.strip()) + '\',\'Usuario\',\'' + str(row[6].strip()) + '\',\'' + str(pwd) + '\',\'' + str(depto.strip()) + '\',\'' + str(perfil.strip()) + '\',\'.\',\'0\' ,\'' + str(row[3].strip()) + '\',\'\',\'\' ,\'Si\',\'' + str(IdUserTeamWork) + '\',\'' + str(FechaIngreso)  + '\',\'1999-01-01\')'
                         SqlRecursos = instertRecurso(IdUser,row[0],costo)
                         print(Sql)
                         execute_SQL(Sql,dbMSSQLNorthwind)
